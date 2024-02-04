@@ -56,9 +56,7 @@
     margin-right: 30px;
 }
 
-.span-icons:nth-child(ArrowDownwardIcon) {
-    margin-left: 20px;
-}
+
 
 .answer-pop {
     background-color: white;
@@ -99,7 +97,7 @@
     margin-top: 10px;
 }
 
-;
+
 
 /* Modal styling...................................here */
 .modal-style {
