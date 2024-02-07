@@ -24,9 +24,9 @@ app.use(bodyParser.urlencoded({extended:true}));
 // path
 const path = require('path')
 app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
-app.use('/uploads',express.static(path.join(__dirname,"/../Quora/dist")));
+app.use(express.static(path.join(__dirname,"/../Quora/dist")));
 
-app.get("*",(req,res)=>{
+app.get("/",(req,res)=>{
     try {
 
         res.sendFile(path.join(__dirname,"/../Quora/dist/index.html"))
@@ -38,6 +38,9 @@ app.get("*",(req,res)=>{
 const questionRoute= require('./routes/question')
 
 app.use(questionRoute);
+
+const answerRoute= require('./routes/answer');
+app.use(answerRoute);
 
 app.listen(5000,()=>{
     console.log('server start 5000')

@@ -1,5 +1,6 @@
 const {Router}=require('express');
-const router=Router();
+const questionRouter=Router();
 const questionController=require('../Controllers/questionCon');
-router.post('/question',questionController.question_post)
-module.exports=router
+questionRouter.post('/question',questionController.question_post)
+questionRouter.get('/question',questionController.question_get)
+module.exports=questionRouter

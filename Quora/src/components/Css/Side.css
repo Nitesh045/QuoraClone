@@ -1,11 +1,15 @@
 .sideBar{
     margin-top: 10px;
     flex: 0.2;
+    
 }
 
 .sidebarOptions{
     display: flex;
     flex-direction: column;
+    position: sticky;
+    left: 10px;
+    top: 100px;
 }
 .sidebarOption img{
   width: 30px;
