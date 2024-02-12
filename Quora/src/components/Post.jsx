@@ -18,6 +18,8 @@ import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import ReactTimeAgo from 'react-time-ago'
 import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../ReduxFeature/UserSlice';
 function LastSeen({ date }) {
   return (
     <div>
@@ -27,13 +29,28 @@ function LastSeen({ date }) {
 }
 
 export const Post = ({ post }) => {
+  const [count,setCount]=useState(0)
   const [isModelopen, setIsModalopen] = useState(false);
   const [answer, setAnswer] = useState('');
 
+  const handlecoundPlus=()=>{
+    setCount(count+1)
+    localStorage.setItem("countValue", JSON.stringify(count));
+  };
+  const handleCountminus=()=>{
+    if(count<1){
+      return setCount(0)
+    }else{
+      setCount(count-1)
+      
+    }
+  }
+  
   const handleQuill = (value) => {
     setAnswer(value);
   };
   console.log(answer);
+  const user= useSelector(selectUser);
   const handleAnswer = async () => {
     console.log(answer)
     if (post?._id && answer !== "") {
@@ -44,7 +61,11 @@ export const Post = ({ post }) => {
       // }
       const body = {
         answerName: answer,
-        questionId: post?._id
+        questionId: post?._id,
+        user:user,
+        count:count
+        
+
       }
       await axios.post('/answer', body).then((res) => {
         console.log(res.data);
@@ -62,8 +83,8 @@ export const Post = ({ post }) => {
   return (
     <div className='post'>
       <div className="post-info">
-        <Avatar />
-        <h4>User Name</h4>
+        <Avatar src={post?.user?.photo}/>
+        <h4>{post?.user?.userName}</h4>
         <small><LastSeen date={post?.createAt} /></small>
       </div>
       <div className="post-body">
@@ -72,49 +93,52 @@ export const Post = ({ post }) => {
 
         <Button onClick={() => setIsModalopen(true)}>Answer</Button>
       </div>
-      <div>
-        {post?.questionUrl !== "" && <img src={post.questionUrl} alt='imge' style={{ width: "100%", height: "200px" }} />}
+      <div className='img-div-question'>
+        {post?.questionUrl !== "" && <img src={post.questionUrl} alt='imge' style={{ width: "90%", height: "300px" }} />}
       </div>
       <div className="post-footer">
         <div className="post-footerAction">
           <span className='span-icons'>
-            <Button><ArrowUpwardIcon /><span>Upvote</span></Button>
-            <Button><ArrowDownwardIcon /></Button>
+            <Button onClick={handlecoundPlus}><ArrowUpwardIcon /></Button>
+            {count}
+            <Button onClick={handleCountminus}><ArrowDownwardIcon /></Button>
           </span>
           <Button><RepeatIcon /></Button>
           <Button><ChatBubbleOutlineIcon /></Button>
-        </div>
-
-        <div className="post-footer-right">
           <Button><ShareIcon /></Button>
           <Button><MoreHorizIcon /></Button>
         </div>
+
+        {/* <div className="post-footer-right">
+          <Button><ShareIcon /></Button>
+          <Button><MoreHorizIcon /></Button>
+        </div> */}
       </div>
-      <p className='answer-pop'>answer {post?.allAnswers?.length-1}</p>
+      <p className='answer-pop'>answer {post?.allAnswers?.length - 1? (post?.allAnswers?.length):0}</p>
       {
         post?.allAnswers?.map((answerPost) => {
-      
-        
-          
-            return (
-              <div className="post-answer">
+
+
+
+          return (
+            <div className="post-answer">
               <div className="post-container">
                 <div className="post-answerd">
-                  <Avatar />
+                  <Avatar src={answerPost?.user?.photo} />
                   <div className="post-answeInfo">
-                    <p>user name</p>
-                    <span><LastSeen date={answerPost?.createAt}/></span>
+                    <p>{answerPost?.user?.userName}</p>
+                    <span><LastSeen date={answerPost?.createAt} /></span>
                   </div>
                 </div>
                 <div className="post-answerTest">
 
-                  <p>{answerPost?.answerName}</p>
+                  <p dangerouslySetInnerHTML= {{ __html: answerPost?.answerName} }></p>
                 </div>
               </div>
-      </div>
-            )
-      })
-}
+            </div>
+          )
+        })
+      }
       {/* modal adding here ........................MODAL */}
 
       <Modal open={isModelopen} closeIcon={Close} onClose={() => setIsModalopen(false)}
@@ -122,7 +146,7 @@ export const Post = ({ post }) => {
         <div className="anser_modal">
           <div className="modal-question">
             <h2>{post?.questionName}</h2>
-            <p>Asked by {''}<span>UserName</span>{new Date(post?.createAt).toLocaleString()}</p>
+            <p>Asked by {''}<span>{post?.user?.userName}</span>{new Date(post?.createAt).toLocaleString()}</p>
           </div>
           <div className="modal__answerQuill">
             <ReactQuill value={answer} onChange={handleQuill} placeholder='Enter Your Answer' style={{ width: "90vb", height: "60vh" }} />

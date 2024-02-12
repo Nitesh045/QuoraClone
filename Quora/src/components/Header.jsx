@@ -1,5 +1,6 @@
 import React, { useState } from 'react'
-import "./Css/Header.css"
+import "./Css/Header.css";
+import './Css/Feed.css';
 import { Box, Tabs, AppBar, Tab, Toolbar, Typography, Avatar, Button, Input } from '@mui/material'
 import HomeIcon from '@mui/icons-material/Home';
 import FeaturedPlayListIcon from '@mui/icons-material/FeaturedPlayList';
@@ -14,6 +15,10 @@ import CloseIcon from '@mui/icons-material/Close';
 import PublicIcon from '@mui/icons-material/Public';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import axios from 'axios';
+import { signOut } from 'firebase/auth';
+import { auth } from '../Firebase';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../ReduxFeature/UserSlice';
 
 export const Header = () => {
   const [isHoveringH, setIsHoveringH] = useState(false);
@@ -23,9 +28,12 @@ export const Header = () => {
 
   const [isModelopen, setIsModalopen] = useState(false);
   // adding question here
-   const [question,setQuestion]= useState('');
+  const [question, setQuestion] = useState('');
 
+const dispatch = useDispatch();
 
+// set user profile......................here
+const user=useSelector(selectUser);
 
   // for option url...............here
   const [inputUrl, setInputUrl] = useState('')
@@ -62,26 +70,39 @@ export const Header = () => {
     setIsHoveringN(false);
   };
 
+  // set logout..........................hre
+  const handleLogout = () => {
+    if (window.confirm('Are you sure to logout?')) {
+      signOut(auth).then(()=>{
+        dispatch(logout())
+        console.log('logout')
+      }).catch((e)=>console.log('login in logout'))
+    }
 
+  }
   // handle submit button question
 
-  const handleSubmitBtn= async()=>{
-     if(question!==""){
-      // const config={
-      //   headers:{
-      //     "Content-Type":"application/json"
-      //   }
-      // }
-      const body={
-        questionName:question,
-        questionUrl:inputUrl
+  const handleSubmitBtn = async () => {
+    if (question !== "") {
+      const config = {
+        headers: {
+          "Content-Type": "application/json"
+        }
       }
-       await axios.post('/question',body).then((res)=>{
+      const body = {
+        questionName: question,
+        questionUrl: inputUrl,
+        user:user,
+      }
+      await axios.post('/question', body, config).then((res) => {
         console.log(res.data);
-       }).catch((e)=>{
+        alert('question added suceesfully')
+        window.location.href = '/';
+      }).catch((e) => {
         console.log(e);
-       })
-     }
+        alert('Error in adding question')
+      })
+    }
   };
   // static return
   return (
@@ -91,7 +112,7 @@ export const Header = () => {
           <img src='https://up.yimg.com/ib/th?id=OIP._S2IBeqibi4VqVnjfcx3dQHaE8&%3Bpid=Api&rs=1&c=1&qlt=95&w=150&h=100' alt='logo-imge' />
         </div>
         <div onMouseOver={handleMouseOverHome}
-          onMouseOut={handleMouseOutHome} className="icon" style={{ color: "red" }}>
+          onMouseOut={handleMouseOutHome} className="icon-h" style={{ color: "red" }}>
           <HomeIcon style={{ fontSize: "30px" }} />
           {isHoveringH && <p className='icon-p'>Home</p>}
         </div>
@@ -115,7 +136,8 @@ export const Header = () => {
           <input type='text' placeholder='Search ' />
         </div>
         <div className="avtar-img " >
-          <Avatar style={{ marginTop: "10px" }} />
+          <span onClick={handleLogout}> <Avatar src={user?.photo} style={{ marginTop: "10px" }} /></span>
+
         </div>
         <div className="addQuestion" style={{ marginTop: "10px" }}> <Button style={{ background: "red", color: "white", fontSize: "bold", marginRight: "20px" }} onClick={() => setIsModalopen(true)}>AddQuestion</Button></div>
         <Modal open={isModelopen} closeIcon={Close} onClose={() => setIsModalopen(false)}
@@ -129,7 +151,7 @@ export const Header = () => {
 
           }} classNames='modalClass'>
           <div className="motal-title">
-            <h3>Add Question</h3>
+            <h3>Add+</h3>
           </div>
           <div className="modal-info">
             <Avatar />
@@ -140,7 +162,7 @@ export const Header = () => {
             </div>
           </div>
           <div className="modal-input">
-            <Input type='text' placeholder='add your question' value={question} onChange={(e)=>setQuestion(e.target.value)}/>
+            <Input type='text' placeholder='add your question' value={question} onChange={(e) => setQuestion(e.target.value)} />
             <div className="input-img">
               {/* for otion url ...........................here */}
               <Input type='text' placeholder='optional include a link' value={inputUrl} onChange={(e) => setInputUrl(e.target.value)} />

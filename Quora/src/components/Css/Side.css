@@ -29,3 +29,11 @@
     border-radius: 5px;
 
 }
+.widget-div{
+   margin-top: 100px;
+}
+.widget-content{
+    position: sticky;
+    top: 50px;
+    right: 30px;
+}

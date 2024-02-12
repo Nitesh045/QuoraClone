@@ -8,10 +8,14 @@ import en from 'javascript-time-ago/locale/en.json'
 import ru from 'javascript-time-ago/locale/ru.json'
 
 TimeAgo.addDefaultLocale(en)
+import { Provider } from 'react-redux'
 //TimeAgo.addLocale(en)
-
+import  store  from './Redux/Store.jsx'
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
-    <App />
+    <Provider store={store}>
+      <App />
+    </Provider>
+
   </React.StrictMode>,
 )

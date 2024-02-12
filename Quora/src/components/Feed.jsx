@@ -1,24 +1,26 @@
 import React, { useEffect, useState } from 'react'
 import { QuoraBox1 } from './QuoraBox1'
 import { Post } from './Post'
-import axios from 'axios'
+import axios from 'axios';
+import "./Css/Quora.css"
+import './Css/Feed.css'
 
 export const Feed = () => {
   const [posts,setposts]=useState([])
   useEffect(()=>{
    axios.get('/question').then((res)=>{
-       setposts(res.data);
+       setposts(res.data.reverse());
      console.log(res.data);
-   }) .catch((e)=>{
+   }).catch((e)=>{
     console.log(e)
    });
    
   },[])
   return (
-    <div>
-      <div><QuoraBox1/></div>
+    <div className='feed-main'>
+      <div className='quora-search'><QuoraBox1/></div>
       {
-        posts.map((post)=>(<Post post={post}/>))
+        posts.map((post ,index)=>(<Post key={index} post={post}/>))
       }
       
     </div>

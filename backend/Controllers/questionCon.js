@@ -38,7 +38,8 @@ module.exports.question_post= async(req,res)=>{
     try {
         await questionSchema.create({
             questionName:req.body.questionName,
-            questionUrl:req.body.questionUrl
+            questionUrl:req.body.questionUrl,
+            user:req.body.user,
         }).then(()=>{
             res.status(201).send({
                 status:true,

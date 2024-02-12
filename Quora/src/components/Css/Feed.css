@@ -22,4 +22,37 @@
 }
 .quoraBox:hover{
     border: solid yellow 1px;
-};
+}
+/* making responsive */
+@media screen and (max-width: 600px) {
+    .inputBox input{
+        width: 200px;
+
+    }
+    .inputBox{
+        width: 250px;
+    }
+    body{
+        font-size: small;
+        margin: 0;
+        padding: 0;
+    }
+    .header-logo img{
+        display: none;
+    }
+    .icon{
+        display: none;
+    }
+    .modal-input{
+        width: 100px;
+        margin-left: 0px;
+    }
+    .quorahedear{
+        min-width: auto;
+    }
+    
+    .header-logo{
+        display: flex;
+        
+    }
+}

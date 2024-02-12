@@ -7,7 +7,9 @@ module.exports.answer_post=async(req,res)=>{
     try {
         await answerSchema.create({
             answerName:req.body.answerName,
-            questionId:req.body.questionId
+            questionId:req.body.questionId,
+            user:req.body.user,
+            
         }).then(()=>{
             res.status(201).send({
                 status:true,
