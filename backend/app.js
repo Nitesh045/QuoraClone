@@ -29,8 +29,8 @@ app.use(bodyParser.urlencoded({extended:true}));
 // path
 const path = require('path')
 app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
-app.use(express.static(path.join(__dirname,"/../Quora/dist")));
-//app.use(express.static(path.join(__dirname, '/Quora/dist')));
+//app.use(express.static(path.join(__dirname,"/../Quora/dist")));
+app.use(express.static(path.join(__dirname, '/Quora/dist')));
 
 app.get("/",(req,res)=>{
     try {
