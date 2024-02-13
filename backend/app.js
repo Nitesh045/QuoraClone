@@ -1,8 +1,6 @@
 const express= require('express')
 const app=express();
-// const env =require('dotenv').config();
-
-const port=4400;
+const port=process.env.Port|| 80
 
 
 const conection= require('../backend/conn/server')
@@ -26,14 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 // path
 const path = require('path')
-//app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
-//app.use(express.static(path.join(__dirname,"/../Quora/dist")));
-app.use(express.static(path.join(__dirname, '/Quora/dist')));
+app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
+app.use(express.static(path.join(__dirname,"/../Quora/dist")));
+//app.use(express.static(path.join(__dirname, '/Quora/dist')));
 
-app.get("*",(req,res)=>{
+app.get("/",(req,res)=>{
     try {
 
-        path.join(process.cwd(),'Quora','dist','index.html')
+        res.sendFile(path.join(__dirname,"/../Quora/dist/index.html"))
     } catch (error) {
         console.log(error);
     }
