@@ -1,6 +1,8 @@
 const express= require('express')
 const app=express();
-const port=process.env.Port|| 80
+// const env =require('dotenv').config();
+
+const port=4400;
 
 
 const conection= require('../backend/conn/server')
