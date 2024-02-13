@@ -44,5 +44,5 @@ const answerRoute= require('./routes/answer');
 app.use(answerRoute);
 
 app.listen(port,()=>{
-    console.log('server start 5000')
+    console.log(`sever start at${port}`)
 })
