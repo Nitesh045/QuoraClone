@@ -35,7 +35,7 @@ app.use(express.static(path.join(__dirname,"/../Quora/dist")));
 app.get("/",(req,res)=>{
     try {
 
-        res.sendFile(path.join(__dirname,"/../Quora/dist/index.html"))
+        res.sendFile(path.join(process.cwd(),'Quora','dist','index.html'))
     } catch (error) {
         console.log(error);
     }
