@@ -1,5 +1,6 @@
 const express= require('express')
 const app=express();
+const port=process.env.Port|| 80
 
 
 const conection= require('../backend/conn/server')
@@ -42,6 +43,6 @@ app.use(questionRoute);
 const answerRoute= require('./routes/answer');
 app.use(answerRoute);
 
-app.listen(5000,()=>{
+app.listen(port,()=>{
     console.log('server start 5000')
 })
