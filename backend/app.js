@@ -24,13 +24,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 // path
 const path = require('path')
-app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
-app.use(express.static(path.join(__dirname,"/../Quora/dist")));
+//app.use('/uploads',express.static(path.join(__dirname,"/../uploads")));
+//app.use(express.static(path.join(__dirname,"/../Quora/dist")));
+app.use(express.static(path.join(__dirname, '/Quora/dist')));
 
-app.get("/",(req,res)=>{
+app.get("*",(req,res)=>{
     try {
 
-        res.sendFile(path.join(__dirname,"/../Quora/dist/index.html"))
+        res.sendFile(path.join(__dirname, 'Quora', 'dist', 'index.html'))
     } catch (error) {
         console.log(error);
     }
