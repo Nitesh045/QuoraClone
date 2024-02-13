@@ -1,6 +1,10 @@
 const express= require('express')
 const app=express();
-const port=process.env.Port|| 80
+const bodyParser = require('body-parser');
+
+const dotenv=require('dotenv');
+dotenv.config();
+const port=process.env.PORT
 
 
 const conection= require('../backend/conn/server')
@@ -19,7 +23,7 @@ app.use((req,res,next)=>{
 });
 
 // body parser
-const bodyParser= require('body-parser');
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 // path
